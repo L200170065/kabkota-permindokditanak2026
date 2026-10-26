@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><base target="_top"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<style>
+:root{--green:#1769aa;--dark:#123b66;--ink:#172b3f;--line:#d9e5f1;--bg:#f2f7fc}
+body{background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.topbar{background:linear-gradient(115deg,var(--dark),var(--green));color:white}
+.brand{width:48px;height:48px;border-radius:12px;background:white;padding:4px;display:grid;place-items:center;flex-shrink:0}.brand img{max-width:100%;max-height:100%;object-fit:contain}
+.shell{max-width:1100px;margin:auto}.cardx{border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 12px 32px #183b5c0b}
+.form-control,.form-select{border-color:#dce5ed;border-radius:10px;min-height:43px}.form-control:focus,.form-select:focus{border-color:#65a9e8;box-shadow:0 0 0 .2rem #1769aa20}
+.btn-primary{background:var(--green);border-color:var(--green);border-radius:10px;font-weight:700}.eyebrow{font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:var(--green)}
+.section-title{font-weight:800}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}.table{margin:0;vertical-align:middle}.table thead th{background:#edf4fb;color:#31506d;font-size:.78rem;white-space:nowrap}.table td{font-size:.86rem}.ragam{min-width:300px}.count{min-width:115px}.institution{border:1px solid var(--line);border-radius:15px;overflow:hidden}.institution-head{background:#eef5fc;padding:14px 16px;border-bottom:1px solid var(--line)}.notice{border-radius:12px;padding:12px 14px;background:#e8f2fc;color:#174f83}.hidden{display:none!important}.wizard-label{font-size:.78rem;color:#8292a5;font-weight:700}.wizard-label.active,.wizard-label.done{color:#1769aa}.step-panel{animation:fadeIn .18s ease}@keyframes fadeIn{from{opacity:.5;transform:translateY(3px)}to{opacity:1;transform:none}}
+@media(max-width:600px){.shell{padding-left:12px;padding-right:12px}.table .form-control{min-width:100px}.wizard-label{font-size:.65rem;max-width:24%;text-align:center}}
+</style>
+</head>
+<body>
+<header class="topbar py-3">
+ <div class="container shell d-flex align-items-center gap-3">
+  <div class="brand"><img src="https://lh3.googleusercontent.com/d/1aSj51L0F0b7YbY4wPunrYgYgpuOZJUlW" alt="Logo Data dan Asesmen Terintegratif" onerror="this.style.display='none'"></div>
+  <div><div class="fw-bold">Permintaan Data Daerah AMPK</div><div class="small opacity-75">Input Kabupaten/Kota · Direktorat Rehabilitasi Sosial Anak</div></div>
+ </div>
+</header>
+<main class="container shell py-4 py-md-5">
+ <div class="mb-4"><div class="eyebrow mb-2">Formulir pendataan</div><h1 class="h3 fw-bold mb-1">Pendataan AMPK Kabupaten/Kota</h1><p class="text-secondary mb-0">Isi rekapitulasi ragam anak, daftar lembaga/LKSA, dan unggah file BNBA AMPK.</p></div>
+ <form id="mainForm" class="cardx p-3 p-md-4" novalidate>
+  <div class="mb-4">
+   <div class="d-flex justify-content-between align-items-center mb-2"><span class="small fw-bold text-primary" id="stepText">TAHAP 1 DARI 4</span><span class="small text-secondary" id="stepPercent">25%</span></div>
+   <div class="progress" style="height:8px" role="progressbar" aria-label="Progress pengisian"><div class="progress-bar" id="wizardProgress" style="width:25%;background:#1769aa"></div></div>
+   <div class="d-flex justify-content-between gap-2 mt-3 wizard-labels"><span class="wizard-label active" data-label="0">1. Identitas</span><span class="wizard-label" data-label="1">2. Ragam Anak</span><span class="wizard-label" data-label="2">3. Lembaga/LKSA</span><span class="wizard-label" data-label="3">4. Konfirmasi</span></div>
+  </div>
+  <section class="step-panel" data-step="0">
+   <div class="d-flex justify-content-between align-items-center mb-3"><h2 class="h5 section-title mb-0">1. Identitas Penginput</h2><span class="badge rounded-pill text-bg-primary">Wajib diisi</span></div>
+   <div class="row g-3">
+    <div class="col-md-6"><label class="form-label fw-semibold">Nama lengkap *</label><input id="nama" class="form-control" required placeholder="Nama penginput"></div>
+    <div class="col-md-6"><label class="form-label fw-semibold">NIP (18 digit) *</label><input id="nip" class="form-control" required inputmode="numeric" maxlength="18" placeholder="YYYYMMDDxxxxxxxxxx"></div>
+    <div class="col-md-6"><label class="form-label fw-semibold">Nomor WhatsApp *</label><input id="wa" class="form-control" required placeholder="Contoh: 081234567890"></div>
+    <div class="col-md-6"><label class="form-label fw-semibold">Provinsi *</label><select id="provinsi" class="form-select" required><option value="">Memuat provinsi…</option></select></div>
+    <div class="col-md-6"><label class="form-label fw-semibold">Kabupaten/Kota *</label><select id="kabkota" class="form-select" required disabled><option value="">Pilih provinsi terlebih dahulu</option></select></div>
+   </div>
+  </section>
+  <section class="step-panel hidden" data-step="1">
+   <div class="d-flex justify-content-between align-items-start gap-3 mb-3"><div><h2 class="h5 section-title mb-1">2. Rekapitulasi Ragam Anak</h2><p class="small text-secondary mb-0">Isi jumlah data terkini/saat ini pada masing-masing ragam anak di wilayah Kabupaten/Kota.</p></div><span class="badge text-bg-light border">9 ragam</span></div>
+   <div class="table-wrap"><table class="table"><thead><tr><th style="width:55px">No.</th><th class="ragam">Ragam Anak</th><th class="text-center">Laki-laki</th><th class="text-center">Perempuan</th><th class="text-center">Total</th><th class="text-center">Korban</th><th class="text-center">Pelaku</th><th class="text-center">Saksi</th></tr></thead><tbody id="countyRows"></tbody><tfoot><tr class="fw-bold"><td></td><td>JUMLAH</td><td id="countyMaleTotal">0</td><td id="countyFemaleTotal">0</td><td id="countyTotal">0</td><td id="countyKorbanTotal">0</td><td id="countyPelakuTotal">0</td><td id="countySaksiTotal">0</td></tr></tfoot></table></div>
+  </section>
+  <section class="step-panel hidden" data-step="2">
+   <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><div><h2 class="h5 section-title mb-1">3. Daftar Lembaga/LKSA</h2><p class="small text-secondary mb-0">Tambahkan seluruh lembaga/LKSA di Kabupaten/Kota. Setiap lembaga memiliki data ragam anak dan anak binaan.</p></div><button type="button" id="addInstitution" class="btn btn-outline-primary"><i class="bi bi-plus-circle me-1"></i>Tambah Lembaga</button></div>
+   <div id="institutions" class="d-grid gap-3"></div><div id="savedInstitutionList" class="d-grid gap-2 mt-3"></div>
+  </section>
+  <section class="step-panel hidden" data-step="3">
+    <h2 class="h5 section-title mb-1">4. Konfirmasi Data</h2><p class="small text-secondary">Pastikan identitas, rekap ragam anak, jumlah lembaga/LKSA, dan file BNBA setiap lembaga sudah benar sebelum mengirim.</p>
+    <div id="confirmationSummary" class="d-grid gap-3"></div>
+    <div class="notice mt-3"><i class="bi bi-info-circle me-1"></i>Jika ada data yang perlu diperbaiki, gunakan tombol Kembali untuk menuju halaman terkait.</div>
+  </section>
+  <div class="d-flex flex-column flex-sm-row gap-2 justify-content-between mt-4"><button type="button" id="backBtn" class="btn btn-outline-secondary hidden"><i class="bi bi-arrow-left me-1"></i>Kembali</button><div class="d-flex gap-2 justify-content-end ms-sm-auto"><button type="reset" class="btn btn-outline-secondary">Reset Form</button><button type="button" id="nextBtn" class="btn btn-primary px-4">Lanjutkan <i class="bi bi-arrow-right ms-1"></i></button><button id="submitBtn" type="submit" class="btn btn-primary px-4 hidden"><i class="bi bi-send me-1"></i>Kirim Data Kabupaten/Kota</button></div></div>
+  <div id="message" class="mt-3 hidden" aria-live="polite"></div>
+ </form>
+ <div class="text-center small text-secondary mt-4">Permintaan Data Daerah AMPK · Direktorat Rehabilitasi Sosial Anak · Kementerian Sosial RI</div>
+</main>
+<div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4"><div class="modal-body text-center p-4"><div class="display-4 text-danger"><i class="bi bi-exclamation-circle"></i></div><h2 class="h5 fw-bold mt-2" id="errorTitle">Periksa kembali data</h2><p id="errorText" class="text-secondary mb-4"></p><button class="btn btn-primary px-4" data-bs-dismiss="modal">Mengerti</button></div></div></div></div>
+<div class="modal fade" id="resultModal" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content border-0 rounded-4"><div class="modal-body text-center p-4"><div id="resultIcon" class="display-4 text-success"><i class="bi bi-check-circle"></i></div><h2 id="resultTitle" class="h5 fw-bold mt-2">Berhasil</h2><p id="resultText" class="text-secondary"></p><a id="fileLink" class="btn btn-outline-primary hidden mb-2" target="_blank" rel="noopener">Buka file BNBA tersimpan</a><button class="btn btn-primary d-block mx-auto" data-bs-dismiss="modal">Tutup</button></div></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const QUESTIONS=[
+'Anak yang Berhadapan dengan Hukum',
+'Anak yang Menjadi Korban Penyalahgunaan Narkotika, Alkohol, Psikotropika, dan Zat Adiktif Lainnya',
+'Anak dengan HIV dan AIDS',
+'Anak Korban Kekerasan (Fisik/Psikis/termasuk dalam Ranah Daring)',
+'Anak Korban Kejahatan Seksual',
+'Anak Korban Jaringan Terorisme',
+'Anak Penyandang Disabilitas',
+'Anak Terlantar',
+'Anak Jalanan'
+];
+let initialData={provinces:[],regenciesByProvince:{}}, institutionCounter=0, savedInstitutions=[], editingInstitutionId=null;
+const $=id=>document.getElementById(id);
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function showMessage(msg,type='danger'){ $('errorTitle').textContent=type==='success'?'Informasi':'Periksa kembali data'; $('errorText').textContent=msg; bootstrap.Modal.getOrCreateInstance($('errorModal')).show(); }
+function intInput(label,cls='form-control count'){return `<input type="number" min="0" step="1" value="0" class="${cls}" aria-label="${esc(label)}" required>`;}
+function renderCountyRows(){$('countyRows').innerHTML=QUESTIONS.map((q,i)=>`<tr><td class="text-center">${i+1}</td><td>${esc(q)}</td><td>${intInput(q+' laki-laki','form-control county-male count')}</td><td>${intInput(q+' perempuan','form-control county-female count')}</td><td class="text-center fw-semibold county-row-total">0</td>${i===0?['Korban','Pelaku','Saksi'].map(role=>`<td>${intInput('ABH '+role.toLowerCase(),'form-control county-abh-'+role.toLowerCase()+' count')}</td>`).join(''):'<td class="text-center text-secondary">—</td><td class="text-center text-secondary">—</td><td class="text-center text-secondary">—</td>'}</tr>`).join('');document.querySelectorAll('.county-male,.county-female,.county-abh-korban,.county-abh-pelaku,.county-abh-saksi').forEach(el=>el.addEventListener('input',countyTotal));countyTotal();}
+function countyTotal(){let m=0,f=0;document.querySelectorAll('#countyRows tr').forEach(row=>{const a=Number(row.querySelector('.county-male').value)||0,b=Number(row.querySelector('.county-female').value)||0;m+=a;f+=b;row.querySelector('.county-row-total').textContent=(a+b).toLocaleString('id-ID');});$('countyMaleTotal').textContent=m.toLocaleString('id-ID');$('countyFemaleTotal').textContent=f.toLocaleString('id-ID');$('countyTotal').textContent=(m+f).toLocaleString('id-ID');['korban','pelaku','saksi'].forEach(role=>{const input=document.querySelector('.county-abh-'+role);$('county'+role.charAt(0).toUpperCase()+role.slice(1)+'Total').textContent=input?Number(input.value||0).toLocaleString('id-ID'):'0';});}
+function addInstitution(data=null, id=null){
+ if(document.querySelector('.institution')){showMessage('Simpan atau batalkan form lembaga yang sedang dibuka terlebih dahulu.');return;}
+ const instId=id||('inst-'+Date.now()+'-'+Math.random().toString(36).slice(2,7));editingInstitutionId=instId;
+ const wrap=document.createElement('div');wrap.className='institution';wrap.dataset.institution=instId;
+ wrap.innerHTML=`<div class="institution-head d-flex align-items-center justify-content-between gap-2"><div class="fw-bold"><i class="bi bi-building me-2"></i>${data?'Edit Lembaga/LKSA':'Input Lembaga/LKSA'}</div><button type="button" class="btn btn-sm btn-outline-secondary cancel-inst">Batal</button></div>
+ <div class="p-3"><div class="row g-3 mb-4">
+ <div class="col-md-6"><label class="form-label fw-semibold">Nama Lembaga *</label><input class="form-control inst-name" required placeholder="Nama resmi lembaga"></div>
+ <div class="col-md-6"><label class="form-label fw-semibold">No. Kontak (WA) Lembaga</label><input class="form-control inst-wa" placeholder="+62xxxxxxxxxx"></div>
+ <div class="col-12"><label class="form-label fw-semibold">Alamat Lembaga</label><input class="form-control inst-address" placeholder="Alamat lengkap"></div>
+ <div class="col-md-4"><label class="form-label fw-semibold">Desa/Kelurahan</label><input class="form-control inst-village"></div>
+ <div class="col-md-4"><label class="form-label fw-semibold">Kecamatan</label><input class="form-control inst-district"></div>
+ <div class="col-md-4"><label class="form-label fw-semibold">Kabupaten/Kota</label><input class="form-control inst-regency" readonly></div>
+ <div class="col-md-4"><label class="form-label fw-semibold">Provinsi</label><input class="form-control inst-province" readonly></div>
+ </div><div class="border rounded-3 p-3 bg-light mb-4"><label class="form-label fw-semibold">File BNBA Lembaga/LKSA <span class="text-danger">*</span></label><input type="file" class="form-control inst-bnba" accept=".xls,.xlsx,.xlsm,.ods,.csv"><div class="form-text">Wajib untuk setiap lembaga. Format XLS, XLSX, XLSM, ODS, atau CSV; maksimal 10 MB.</div><div class="small text-secondary mt-1 inst-bnba-info">${data&&data.bnbaFile?`File tersimpan sementara: ${esc(data.bnbaFile.name)}`:'Belum ada file dipilih.'}</div></div><h3 class="h6 fw-bold mb-2">Data terkini/saat ini per ragam anak</h3>
+ <div class="table-wrap mb-4"><table class="table"><thead><tr><th style="width:55px">No.</th><th class="ragam">Ragam Anak</th><th>Laki-laki</th><th>Perempuan</th><th>Total</th><th>Korban</th><th>Pelaku</th><th>Saksi</th></tr></thead><tbody>${QUESTIONS.map((q,i)=>`<tr><td class="text-center">${i+1}</td><td>${esc(q)}</td><td>${intInput(q+' laki-laki','form-control inst-male count')}</td><td>${intInput(q+' perempuan','form-control inst-female count')}</td><td class="text-center fw-semibold inst-row-total">0</td>${i===0?['Korban','Pelaku','Saksi'].map(role=>`<td>${intInput('ABH '+role.toLowerCase(),'form-control inst-abh-'+role.toLowerCase()+' count')}</td>`).join(''):'<td class="text-center text-secondary">—</td><td class="text-center text-secondary">—</td><td class="text-center text-secondary">—</td>'}</tr>`).join('')}</tbody><tfoot><tr class="fw-bold"><td colspan="2">JUMLAH</td><td class="inst-male-total">0</td><td class="inst-female-total">0</td><td class="inst-ragam-total">0</td><td class="inst-abh-korban-total">0</td><td class="inst-abh-pelaku-total">0</td><td class="inst-abh-saksi-total">0</td></tr></tfoot></table></div>
+ <h3 class="h6 fw-bold mb-2">Jumlah Anak Binaan</h3><div class="row g-3"><div class="col-md-4"><label class="form-label">Anak Binaan - Perempuan</label>${intInput('Anak binaan perempuan','form-control inst-girls')}</div><div class="col-md-4"><label class="form-label">Anak Binaan - Laki-laki</label>${intInput('Anak binaan laki-laki','form-control inst-boys')}</div><div class="col-md-4"><label class="form-label">Jumlah Anak Binaan (+)</label><input class="form-control inst-total" readonly value="0"></div></div>
+ <div class="d-flex justify-content-end mt-4"><button type="button" class="btn btn-primary save-inst"><i class="bi bi-save me-1"></i>Simpan Lembaga</button></div></div>`;
+ $('institutions').innerHTML='';$('institutions').appendChild(wrap);$('addInstitution').classList.add('hidden');
+  wrap.querySelector('.inst-bnba').addEventListener('change',e=>{const f=e.target.files[0];wrap.querySelector('.inst-bnba-info').textContent=f?`${f.name} · ${(f.size/1024/1024).toFixed(2)} MB`:(data&&data.bnbaFile?`File tersimpan sementara: ${data.bnbaFile.name}`:'Belum ada file dipilih.');});
+ wrap.querySelector('.cancel-inst').addEventListener('click',()=>{wrap.remove();editingInstitutionId=null;$('addInstitution').classList.remove('hidden');renderSavedInstitutions();});
+ wrap.querySelector('.save-inst').addEventListener('click',()=>saveCurrentInstitution(true));
+ wrap.querySelectorAll('.inst-male,.inst-female,.inst-abh-korban,.inst-abh-pelaku,.inst-abh-saksi,.inst-girls,.inst-boys').forEach(el=>el.addEventListener('input',()=>updateInstitutionTotals(wrap)));
+ wrap.querySelector('.inst-regency').value=$('kabkota').value;wrap.querySelector('.inst-province').value=$('provinsi').value;
+ if(data){wrap.querySelector('.inst-name').value=data.nama||'';wrap.querySelector('.inst-wa').value=data.wa||'';wrap.querySelector('.inst-address').value=data.alamat||'';wrap.querySelector('.inst-village').value=data.desa||'';wrap.querySelector('.inst-district').value=data.kecamatan||'';wrap.querySelectorAll('.inst-male').forEach((el,i)=>el.value=Number(((data.genderCounts||{})[QUESTIONS[i]]||{}).lakiLaki||0));wrap.querySelectorAll('.inst-female').forEach((el,i)=>el.value=Number(((data.genderCounts||{})[QUESTIONS[i]]||{}).perempuan||0));['korban','pelaku','saksi'].forEach(k=>{const el=wrap.querySelector('.inst-abh-'+k);if(el)el.value=Number((data.abh||{})[k]||0)});wrap.querySelector('.inst-girls').value=Number(data.perempuan||0);wrap.querySelector('.inst-boys').value=Number(data.lakiLaki||0);}
+ updateInstitutionTotals(wrap);
+}
+function readCurrentInstitution(wrap){const counts={},genderCounts={};QUESTIONS.forEach((q,i)=>{const lakiLaki=Number(wrap.querySelectorAll('.inst-male')[i].value||0),perempuan=Number(wrap.querySelectorAll('.inst-female')[i].value||0);genderCounts[q]={lakiLaki,perempuan};counts[q]=lakiLaki+perempuan;});const selectedFile=wrap.querySelector('.inst-bnba').files[0];return {id:editingInstitutionId,bnbaFile:selectedFile||(savedInstitutions.find(x=>x.id===editingInstitutionId)||{}).bnbaFile||null,nama:wrap.querySelector('.inst-name').value.trim(),wa:wrap.querySelector('.inst-wa').value.trim(),alamat:wrap.querySelector('.inst-address').value.trim(),desa:wrap.querySelector('.inst-village').value.trim(),kecamatan:wrap.querySelector('.inst-district').value.trim(),provinsi:$('provinsi').value,kabupatenKota:$('kabkota').value,counts,genderCounts,abh:{korban:Number(wrap.querySelector('.inst-abh-korban').value||0),pelaku:Number(wrap.querySelector('.inst-abh-pelaku').value||0),saksi:Number(wrap.querySelector('.inst-abh-saksi').value||0)},jumlahBinaan:Number(wrap.querySelector('.inst-total').value||0),perempuan:Number(wrap.querySelector('.inst-girls').value||0),lakiLaki:Number(wrap.querySelector('.inst-boys').value||0)};}
+function saveCurrentInstitution(showNotice=false){
+ const wrap=document.querySelector('.institution');if(!wrap)return true;
+ const requiredFields=[
+  ['.inst-name','Nama Lembaga'],
+  ['.inst-wa','No Kontak (WhatsApp) Lembaga'],
+  ['.inst-address','Alamat Lembaga'],
+  ['.inst-village','Desa/Kelurahan'],
+  ['.inst-district','Kecamatan'],
+  ['.inst-regency','Kabupaten/Kota'],
+  ['.inst-province','Provinsi'],
+  ['.inst-girls','Anak Binaan - Perempuan'],
+  ['.inst-boys','Anak Binaan - Laki-laki']
+ ];
+ for(const [selector,label] of requiredFields){
+  const el=wrap.querySelector(selector);
+  if(!el||!String(el.value||'').trim()){
+   showMessage(label+' wajib diisi sebelum data lembaga disimpan.');
+   if(el)el.focus();
+   return false;
+  }
+ }
+ const chosenFile=wrap.querySelector('.inst-bnba').files[0];
+ const existingFile=(savedInstitutions.find(x=>x.id===editingInstitutionId)||{}).bnbaFile;
+ const bnba=chosenFile||existingFile;
+ if(!bnba){showMessage('File BNBA wajib diunggah untuk setiap lembaga/LKSA.');wrap.querySelector('.inst-bnba').focus();return false;}
+ if(bnba.size>10*1024*1024){showMessage('Ukuran file BNBA maksimal 10 MB per lembaga.');wrap.querySelector('.inst-bnba').focus();return false;}
+ const wa=wrap.querySelector('.inst-wa').value.trim();
+ const digits=wa.replace(/[^0-9]/g,'');
+ if(digits.length<9||digits.length>15){
+  showMessage('No Kontak (WhatsApp) Lembaga wajib diisi dengan nomor yang valid, termasuk kode negara +62.');
+  wrap.querySelector('.inst-wa').focus();return false;
+ }
+ for(const el of wrap.querySelectorAll('input[type=number]'))if(el.value===''||!Number.isInteger(Number(el.value))||Number(el.value)<0){
+  const label=el.getAttribute('aria-label')||'Jumlah anak';
+  showMessage(label+' wajib diisi dengan bilangan bulat nol atau lebih.');
+  el.focus();return false;
+ }
+ // Lembaga khusus laki-laki/perempuan diperbolehkan: cukup salah satu nilai > 0.
+ const jumlahPerempuan=Number(wrap.querySelector('.inst-girls').value);
+ const jumlahLakiLaki=Number(wrap.querySelector('.inst-boys').value);
+ if(jumlahPerempuan===0&&jumlahLakiLaki===0){
+  showMessage('Jumlah Anak Binaan tidak boleh 0 untuk kedua jenis kelamin. Isi minimal 1 anak pada Laki-laki atau Perempuan. Nilai 0 diperbolehkan untuk jenis kelamin yang tidak ada di lembaga khusus.');
+  wrap.querySelector('.inst-girls').focus();return false;
+ }
+ const item=readCurrentInstitution(wrap);const ix=savedInstitutions.findIndex(x=>x.id===item.id);if(ix>=0)savedInstitutions[ix]=item;else savedInstitutions.push(item);wrap.remove();editingInstitutionId=null;renderSavedInstitutions();$('addInstitution').classList.remove('hidden');if(showNotice)showMessage('Data lembaga disimpan sementara. Data baru dikirim ke spreadsheet setelah tombol Kirim Data Kabupaten/Kota dipilih.','success');return true;}
+function renderSavedInstitutions(){const host=$('savedInstitutionList');if(!host)return;host.innerHTML=savedInstitutions.length?savedInstitutions.map((x,i)=>`<div class="border rounded-3 p-3 bg-white"><div class="d-flex justify-content-between align-items-start gap-2"><div><div class="fw-bold">${i+1}. ${esc(x.nama)}</div><div class="small text-secondary">${esc(x.kecamatan||'Kecamatan belum diisi')} · ${esc(x.desa||'Desa/Kelurahan belum diisi')}</div><div class="small mt-1">Total ragam anak: <strong>${QUESTIONS.reduce((s,q)=>s+Number(x.counts[q]||0),0).toLocaleString('id-ID')}</strong> · Anak binaan: <strong>${Number(x.jumlahBinaan||0).toLocaleString('id-ID')}</strong></div></div><div class="d-flex gap-2"><button type="button" class="btn btn-sm btn-outline-primary" data-edit-inst="${esc(x.id)}"><i class="bi bi-pencil me-1"></i>Edit</button><button type="button" class="btn btn-sm btn-outline-danger" data-delete-inst="${esc(x.id)}"><i class="bi bi-trash"></i></button></div></div></div>`).join(''):'<div class="border border-dashed rounded-3 p-4 text-center text-secondary">Belum ada lembaga yang disimpan. Klik <strong>Tambah Lembaga</strong> untuk mulai mengisi.</div>';host.querySelectorAll('[data-edit-inst]').forEach(b=>b.addEventListener('click',()=>{const item=savedInstitutions.find(x=>x.id===b.dataset.editInst);if(item)addInstitution(item,item.id);}));host.querySelectorAll('[data-delete-inst]').forEach(b=>b.addEventListener('click',()=>{savedInstitutions=savedInstitutions.filter(x=>x.id!==b.dataset.deleteInst);renderSavedInstitutions();$('addInstitution').classList.remove('hidden');}));}
+function updateInstitutionTotals(wrap){
+ let male=0,female=0;wrap.querySelectorAll('tbody tr').forEach(row=>{const m=Number(row.querySelector('.inst-male').value)||0,f=Number(row.querySelector('.inst-female').value)||0;male+=m;female+=f;row.querySelector('.inst-row-total').textContent=(m+f).toLocaleString('id-ID');});
+ wrap.querySelector('.inst-male-total').textContent=male.toLocaleString('id-ID');wrap.querySelector('.inst-female-total').textContent=female.toLocaleString('id-ID');wrap.querySelector('.inst-ragam-total').textContent=(male+female).toLocaleString('id-ID');['korban','pelaku','saksi'].forEach(k=>{const el=wrap.querySelector('.inst-abh-'+k);wrap.querySelector('.inst-abh-'+k+'-total').textContent=Number(el.value||0).toLocaleString('id-ID');});
+ const girls=Number(wrap.querySelector('.inst-girls').value)||0,boys=Number(wrap.querySelector('.inst-boys').value)||0;wrap.querySelector('.inst-total').value=girls+boys;
+}
+function renumberInstitutions(){document.querySelectorAll('.institution').forEach((x,i)=>x.querySelector('.inst-number').textContent=i+1);}
+function syncInstitutionRegions(){document.querySelectorAll('.institution').forEach(w=>{w.querySelector('.inst-province').value=$('provinsi').value;w.querySelector('.inst-regency').value=$('kabkota').value;});savedInstitutions.forEach(x=>{x.provinsi=$('provinsi').value;x.kabupatenKota=$('kabkota').value;});}
+function loadRegions(){
+ google.script.run.withSuccessHandler(data=>{
+  initialData=data||initialData;
+  $('provinsi').innerHTML='<option value="">Pilih provinsi</option>'+initialData.provinces.map(p=>`<option value="${esc(p)}">${esc(p)}</option>`).join('');
+ }).withFailureHandler(err=>showMessage('Daftar wilayah gagal dimuat: '+(err.message||err))).getInitialData();
+}
+$('provinsi').addEventListener('change',()=>{
+ const p=$('provinsi').value, regs=initialData.regenciesByProvince[p]||[];
+ $('kabkota').innerHTML='<option value="">Pilih Kabupaten/Kota</option>'+regs.map(k=>`<option value="${esc(k)}">${esc(k)}</option>`).join('');$('kabkota').disabled=!p;syncInstitutionRegions();
+});
+$('kabkota').addEventListener('change',syncInstitutionRegions);
+$('addInstitution').addEventListener('click',()=>addInstitution());
+async function readFileAsBase64(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result).split(',').pop());r.onerror=()=>reject(Error('File tidak dapat dibaca.'));r.readAsDataURL(file);});}
+let currentStep=0;
+function setStep(n){currentStep=Math.max(0,Math.min(3,n));if(currentStep===3)renderConfirmation();document.querySelectorAll('.step-panel').forEach(el=>el.classList.toggle('hidden',Number(el.dataset.step)!==currentStep));document.querySelectorAll('.wizard-label').forEach(el=>{const i=Number(el.dataset.label);el.classList.toggle('active',i===currentStep);el.classList.toggle('done',i<currentStep);});$('wizardProgress').style.width=((currentStep+1)*25)+'%';$('stepText').textContent=`TAHAP ${currentStep+1} DARI 4`;$('stepPercent').textContent=((currentStep+1)*25)+'%';$('backBtn').classList.toggle('hidden',currentStep===0);$('nextBtn').classList.toggle('hidden',currentStep===3);$('submitBtn').classList.toggle('hidden',currentStep!==3);window.scrollTo({top:0,behavior:'smooth'});}
+function renderConfirmation(){
+ const counts=[...document.querySelectorAll('#countyRows tr')].map((r,i)=>({name:QUESTIONS[i],male:Number(r.querySelector('.county-male').value)||0,female:Number(r.querySelector('.county-female').value)||0,korban:i===0?Number(r.querySelector('.county-abh-korban').value)||0:null,pelaku:i===0?Number(r.querySelector('.county-abh-pelaku').value)||0:null,saksi:i===0?Number(r.querySelector('.county-abh-saksi').value)||0:null}));
+ const totalMale=counts.reduce((s,x)=>s+x.male,0),totalFemale=counts.reduce((s,x)=>s+x.female,0);
+ const insts=savedInstitutions.map(x=>({nama:x.nama,file:x.bnbaFile&&x.bnbaFile.name||'BNBA belum dipilih'}));
+ const active=document.querySelector('.institution');
+ if(active&&active.querySelector('.inst-name').value.trim()){const prior=savedInstitutions.find(x=>x.id===editingInstitutionId)||{};insts.push({nama:active.querySelector('.inst-name').value.trim(),file:(active.querySelector('.inst-bnba').files[0]||prior.bnbaFile||{}).name||'BNBA belum dipilih'});}
+ $('confirmationSummary').innerHTML=`<div class="border rounded-3 p-3"><h3 class="h6 fw-bold">Identitas Penginput</h3><div>${esc($('nama').value)} · NIP ${esc($('nip').value)}</div><div>${esc($('wa').value)}</div><div>${esc($('provinsi').value)} — ${esc($('kabkota').value)}</div></div><div class="border rounded-3 p-3"><h3 class="h6 fw-bold">Rekapitulasi Ragam Anak</h3><div class="table-wrap"><table class="table table-sm"><thead><tr><th>Ragam Anak</th><th>Laki-laki</th><th>Perempuan</th><th>Total</th><th>Korban</th><th>Pelaku</th><th>Saksi</th></tr></thead><tbody>${counts.map(x=>`<tr><td>${esc(x.name)}</td><td>${x.male.toLocaleString('id-ID')}</td><td>${x.female.toLocaleString('id-ID')}</td><td>${(x.male+x.female).toLocaleString('id-ID')}</td><td>${x.korban===null?'—':x.korban.toLocaleString('id-ID')}</td><td>${x.pelaku===null?'—':x.pelaku.toLocaleString('id-ID')}</td><td>${x.saksi===null?'—':x.saksi.toLocaleString('id-ID')}</td></tr>`).join('')}</tbody><tfoot><tr class="fw-bold"><td>JUMLAH</td><td>${totalMale.toLocaleString('id-ID')}</td><td>${totalFemale.toLocaleString('id-ID')}</td><td>${(totalMale+totalFemale).toLocaleString('id-ID')}</td><td>${counts.reduce((s,x)=>s+(x.korban||0),0).toLocaleString('id-ID')}</td><td>${counts.reduce((s,x)=>s+(x.pelaku||0),0).toLocaleString('id-ID')}</td><td>${counts.reduce((s,x)=>s+(x.saksi||0),0).toLocaleString('id-ID')}</td></tr></tfoot></table></div></div><div class="border rounded-3 p-3"><h3 class="h6 fw-bold">Lembaga/LKSA dan File BNBA</h3><div>Jumlah lembaga: <strong>${insts.length}</strong></div><ul class="mb-0 mt-2">${insts.map(x=>`<li>${esc(x.nama)} — <span class="text-secondary">${esc(x.file)}</span></li>`).join('')}</ul></div>`;
+}
+function validateStep(step){
+ if(step===0){if(!$('nama').value.trim())throw Error('Nama penginput wajib diisi.');const nip=$('nip').value.trim();if(!/^\d{18}$/.test(nip))throw Error('NIP harus tepat 18 digit angka.');const y=+nip.slice(0,4),m=+nip.slice(4,6),d=+nip.slice(6,8);if(!(y>=1900&&y<=new Date().getFullYear()&&m>=1&&m<=12&&d>=1&&d<=new Date(y,m,0).getDate()))throw Error('Delapan digit pertama NIP harus tanggal valid YYYYMMDD.');if(!/^\+?\d{9,15}$/.test($('wa').value.trim().replace(/[\s()-]/g,'')))throw Error('Nomor WhatsApp penginput tidak valid.');if(!$('provinsi').value||!$('kabkota').value)throw Error('Provinsi dan Kabupaten/Kota wajib dipilih.');}
+ if(step===1){for(const el of document.querySelectorAll('.county-male,.county-female,.county-abh-korban,.county-abh-pelaku,.county-abh-saksi'))if(el.value===''||!Number.isInteger(Number(el.value))||Number(el.value)<0)throw Error('Semua jumlah laki-laki dan perempuan harus bilangan bulat nol atau lebih.');}
+ if(step===2){const w=document.querySelector('.institution');if(w&&w.querySelector('.inst-name').value.trim()){if(!saveCurrentInstitution(false))throw Error('Periksa kembali data lembaga yang sedang diisi.');}else if(w&&savedInstitutions.length===0)throw Error('Isi nama lembaga lalu klik Simpan Lembaga.');if(!savedInstitutions.length)throw Error('Simpan minimal satu lembaga/LKSA sebelum melanjutkan.');if(savedInstitutions.some(x=>!x.bnbaFile))throw Error('Setiap lembaga/LKSA wajib memiliki file BNBA.');}
+}
+$('nextBtn').addEventListener('click',()=>{try{validateStep(currentStep);setStep(currentStep+1);}catch(err){showMessage(err.message||String(err));}});
+$('backBtn').addEventListener('click',()=>setStep(currentStep-1));
+$('mainForm').addEventListener('submit',async e=>{
+ e.preventDefault();
+ try{
+  for(let i=0;i<3;i++)validateStep(i);if(document.querySelector('.institution')&&document.querySelector('.institution .inst-name').value.trim()&&!saveCurrentInstitution(false))throw Error('Periksa kembali data lembaga yang sedang diisi.');if(!savedInstitutions.length)throw Error('Simpan minimal satu lembaga/LKSA sebelum mengirim.');
+  const btn=$('submitBtn');btn.disabled=true;btn.innerHTML='<span class="spinner-border spinner-border-sm me-2"></span>Mengirim data…';
+  const counts={},genderCounts={};QUESTIONS.forEach((q,i)=>{const row=document.querySelectorAll('#countyRows tr')[i];const lakiLaki=Number(row.querySelector('.county-male').value||0),perempuan=Number(row.querySelector('.county-female').value||0);counts[q]=lakiLaki+perempuan;genderCounts[q]={lakiLaki,perempuan,total:lakiLaki+perempuan};});
+  const lembaga=await Promise.all(savedInstitutions.map(async x=>{const f=x.bnbaFile;if(!f)throw Error('File BNBA wajib ada untuk setiap lembaga/LKSA: '+x.nama);return {abh:x.abh,nama:x.nama,wa:x.wa,alamat:x.alamat,desa:x.desa,kecamatan:x.kecamatan,counts:x.counts,genderCounts:x.genderCounts,jumlahBinaan:x.jumlahBinaan,perempuan:x.perempuan,lakiLaki:x.lakiLaki,bnba:{name:f.name,mimeType:f.type||'application/octet-stream',base64:await readFileAsBase64(f)}};}));
+  const abh={korban:Number(document.querySelector('.county-abh-korban').value||0),pelaku:Number(document.querySelector('.county-abh-pelaku').value||0),saksi:Number(document.querySelector('.county-abh-saksi').value||0)};
+  const payload={identity:{nama:$('nama').value.trim(),nip:$('nip').value.trim(),whatsapp:$('wa').value.trim()},region:{provinsi:$('provinsi').value,kabupatenKota:$('kabkota').value},counts,genderCounts,abh,lembaga};
+  google.script.run.withSuccessHandler(res=>{
+   btn.disabled=false;btn.innerHTML='<i class="bi bi-send me-1"></i>Kirim Data Kabupaten/Kota';
+   if(res&&res.success){$('resultTitle').textContent='Data berhasil dikirim';$('resultText').textContent=`Rekap Kabupaten/Kota tersimpan. Jumlah lembaga/LKSA dan file BNBA: ${res.jumlahLembaga}.`;$('fileLink').classList.add('hidden');const successModal=bootstrap.Modal.getOrCreateInstance($('resultModal'));successModal.show();window.clearTimeout(window.successReturnTimer);window.successReturnTimer=window.setTimeout(()=>successModal.hide(),6000);}
+   else showMessage('Data belum berhasil disimpan. Coba kembali.');
+  }).withFailureHandler(err=>{btn.disabled=false;btn.innerHTML='<i class="bi bi-send me-1"></i>Kirim Data Kabupaten/Kota';showMessage(err.message||String(err));}).submitKabKota(payload);
+ }catch(err){showMessage(err.message||String(err));}
+});
+$('mainForm').addEventListener('reset',()=>setTimeout(()=>{institutionCounter=0;savedInstitutions=[];editingInstitutionId=null;$('institutions').innerHTML='';$('savedInstitutionList').innerHTML='';$('addInstitution').classList.remove('hidden');renderSavedInstitutions();countyTotal();addInstitution();syncInstitutionRegions();setStep(0);},0));
+// Setelah pemberitahuan sukses ditutup otomatis atau oleh pengguna, kosongkan formulir dan kembali ke halaman awal.
+$('resultModal').addEventListener('hidden.bs.modal',()=>{window.clearTimeout(window.successReturnTimer);$('mainForm').reset();});
+renderCountyRows();renderSavedInstitutions();addInstitution();loadRegions();setStep(0);
+</script>
+</body></html>
