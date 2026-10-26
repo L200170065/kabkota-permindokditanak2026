@@ -63,16 +63,24 @@ h1{font-size:clamp(23px,4vw,29px);letter-spacing:-.035em;line-height:1.2;margin:
   </section>
 </main>
 <script>
-  // Auto-direct: tidak menggunakan iframe agar tidak terkena penolakan X-Frame-Options.
-  const APP_URL = "https://script.google.com/macros/s/AKfycbwDa_MhdZQZUo-7MfxD5Bj7v2CtkpXreEvv5vqvybohkIAXNU5HJsJ4t5oOyPns0EugCQ/exec";
-  document.getElementById("openApp").href = APP_URL;
-  window.setTimeout(() => {
-    window.location.replace(APP_URL);
-  }, 1400);
-  // Bila pengalihan dibatalkan browser, sediakan tautan manual.
-  window.setTimeout(() => {
-    document.getElementById("fallback").style.display = "block";
-  }, 4500);
+  const loading = document.getElementById('loading');
+  const frame = document.getElementById('appFrame');
+  const fallback = document.getElementById('fallback');
+  let loaded = false;
+  frame.addEventListener('load', () => {
+    loaded = true;
+    loading.classList.add('hide');
+    setTimeout(() => { loading.style.display = 'none'; }, 400);
+  });
+  setTimeout(() => {
+    if (!loaded) {
+      loading.classList.add('hide');
+      setTimeout(() => {
+        loading.style.display = 'none';
+        fallback.style.display = 'flex';
+      }, 400);
+    }
+  }, 18000);
 </script>
 </body>
 </html>
